@@ -67,6 +67,7 @@ public class UserInterface {
     	} 
     	if(amt < 0) {
     		System.out.println("Cannot be negative numbers!");
+    		amt = 0;
     	}
     	return amt;
     }

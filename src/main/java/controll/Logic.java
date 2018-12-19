@@ -35,11 +35,15 @@ public class Logic {
 	}
 	
 	public static void readReceipt() throws IOException {
-		FileReader fileReader = new FileReader("out.txt");
+		
+			FileReader fileReader = new FileReader("out.txt");
+			
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+		
 		String line = null;
 
 	            // Always wrap FileReader in BufferedReader.
-	            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 	            while((line = bufferedReader.readLine()) != null) {
 	            	act.insertToAccount(Double.parseDouble(line));
