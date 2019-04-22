@@ -1,0 +1,8 @@
+.root {
+     -fx-background-image: url("background.jpg");
+}
+
+#actiontarget {
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(0,255,0,0.5) , 0,0,0,1 );  
+}
