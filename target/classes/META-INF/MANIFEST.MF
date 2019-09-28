@@ -1,5 +1,7 @@
 Manifest-Version: 1.0
 Built-By: silberio_stalone
+Class-Path: lib/h2-1.4.199.jar lib/mysql-connector-java-8.0.15.jar lib
+ /protobuf-java-3.6.1.jar
 Build-Jdk: 1.8.0_91
 Created-By: Maven Integration for Eclipse
 Main-Class: controll.Application
