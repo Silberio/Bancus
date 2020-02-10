@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import model.UserModel;
+
 public class DatabaseConnection {
 	private Statement st;
 	private Connection conn;
@@ -51,6 +53,25 @@ public class DatabaseConnection {
 			System.out.println(result);
 			//here, get a resultset with specific user ID
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Get first user from database
+	 * @return UserModel object with all the info from database
+	 */
+	public UserModel getUserModel() {
+		UserModel result = new UserModel();
+		try {
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM accounts");
+			rs.next();
+			result = new UserModel(rs.getInt("amt"), rs.getString("user"), rs.getInt("user_ID"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

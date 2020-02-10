@@ -6,8 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import model.Account;
+import model.UserModel;
 
 public class Logic {
 	
@@ -23,6 +25,31 @@ public class Logic {
 	}
 	
 	/*
+	 * LOGIN SERVICE
+	 */
+
+	
+	/*
+	 * pseudo:
+	 * 	- Check for users and compile and return a list
+	 * 	- take a username and password
+	 * 		- check if username exists
+	 * 			- check if password correct
+	 * 
+	 * 	- start next process if password check
+	 * 	- if no check, return to login screen
+	 */
+
+	// get all users
+	// system in { user name, password}
+	// if user name and password == resultset name n pass => continue with programm
+	// if not, return to system in
+
+	public void receiveUserLogin() {
+		System.out.println("welcome: " + dbconn.getUserModel().getName());
+	}
+	
+	/*
 	 * DATABASE CONNECTION
 	 */
 	
@@ -33,14 +60,17 @@ public class Logic {
 
     	try {
 			dbconn.connectToDB();
-			int amt = dbconn.getUser();
-			act.insertToAccount(amt);
+	//		int amt = dbconn.getUser();
+			UserModel user = dbconn.getUserModel();
+			act.insertToAccount(user.getAmt());
+			act.setLoginInfo(user);
 			System.out.println("Connection succesful...");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 	
 	/**
 	 * Takes balance form in-memory accuont and inserts value into Database,
@@ -96,6 +126,7 @@ public class Logic {
 	protected static class PersonalAccount implements Account {
 		
 		private double balance = 0;
+		private UserModel user;
 
 		public double checkBalance() {
 			return balance;
@@ -108,6 +139,16 @@ public class Logic {
 		public void withdrawFromAccount(double amount) {
 			this.balance -= amount;
 		}
+
+
+		public void setLoginInfo(UserModel user) {
+			this.user = user;			
+		}
+
+		public UserModel getLoginInfo() {
+			return user;
+		}
+
 		
 		
 	}

@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -19,8 +20,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Account;
+import model.UserModel;
 
 public class ApplicationGUI extends Application {
 	
@@ -158,6 +162,81 @@ public class ApplicationGUI extends Application {
 	        Scene scene = new Scene(grid, 500, 300);   
 	        primaryStage.setScene(scene);        
 	        primaryStage.show();
+	        
+	        loginPrompt(primaryStage);
+	}
+	
+
+
+	public void loginPrompt(Stage primaryStage) {
+        Label secondLabel = new Label("Please Log in: ");
+        final Label wrongLogin = new Label("");
+        final TextField userName = new TextField();
+        final PasswordField password = new PasswordField();
+        Button loginBtn = new Button("Login");
+        Button cancelBtn = new Button("Cancel");
+        
+        GridPane secondaryLayout = new GridPane();
+        secondaryLayout.setAlignment(Pos.CENTER_LEFT);
+        secondaryLayout.setHgap(10);
+        secondaryLayout.setVgap(10);
+        secondaryLayout.setPadding(new Insets(25, 25, 25, 25));
+
+        secondaryLayout.add(secondLabel, 0, 0);
+        secondaryLayout.add(wrongLogin, 1, 0);
+        secondaryLayout.add(userName, 1, 1);
+        secondaryLayout.add(password, 1, 2);
+        secondaryLayout.add(loginBtn, 0, 3);
+        secondaryLayout.add(cancelBtn, 1, 3);
+
+
+        
+        Scene secondScene = new Scene(secondaryLayout, 350, 200);
+
+        // New window (Stage)
+        final Stage newWindow = new Stage();
+        newWindow.initStyle(StageStyle.UNDECORATED);
+        newWindow.setTitle("Second Stage");
+        newWindow.setScene(secondScene);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(primaryStage);
+
+        // Set position of second window, related to primary window.
+        newWindow.setX(primaryStage.getX() + 130);
+        newWindow.setY(primaryStage.getY() + 100);
+
+        newWindow.show();
+        
+        
+        /*
+         * BUTTON LISTENERS
+         */
+        
+        loginBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent e) {
+        		String input = userName.getText();
+        		
+        		if(input.equals(account.getLoginInfo().getName())) {        			
+        			newWindow.close();
+        		} else {
+        			System.out.println("wrong username");
+        			wrongLogin.setText("Incorrect username or password");
+        			wrongLogin.setTextFill(Color.RED);
+        		}
+        	}
+		});
+        
+        
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent e) {
+        		System.exit(0);
+        	}
+		});
+        
 	}
 	
 	public static void main(String[] args) {
