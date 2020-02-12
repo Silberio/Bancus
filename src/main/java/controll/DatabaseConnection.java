@@ -22,56 +22,27 @@ public class DatabaseConnection {
 	 * @throws SQLException
 	 */
 	public void connectToDB() throws SQLException {
+		System.out.println("FUNCTION: DatabaseConnection connectToDB called...");
 		   conn = DriverManager.
 		            getConnection("jdbc:mysql://localhost:3306/bancus", "root", "");
-		   
-
 		   System.out.println("connection established...");
-		   /*
-		   ResultSet rs = st.executeQuery("SELECT * FROM accounts");
-		   
-		   while(rs.next()) {
-			   System.out.println(rs.getString("user") + " " + rs.getString("amt"));
-		   } */
-
 	}
 	
 	// We could use a USER object to put user from DB into logic
 	
-	/**
-	 * Get first user from database
-	 * @return int value with the 'amt' column index in database. i.e. returns a string with the amount of money in account
-	 */
-	public int getUser() {
-		int result = -1;
-		try {
-			st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM accounts");
-			rs.next();
-			result = rs.getInt("amt");
-			
-			System.out.println(result);
-			//here, get a resultset with specific user ID
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
 	
 	/**
 	 * Get first user from database
 	 * @return UserModel object with all the info from database
 	 */
 	public UserModel getUserModel() {
+		System.out.println("FUNCTION: DatabaseConnection getUserModel called...");
 		UserModel result = new UserModel();
 		try {
 			st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM accounts");
 			rs.next();
-			result = new UserModel(rs.getInt("amt"), rs.getString("user"), rs.getInt("user_ID"));
+			result = new UserModel(rs.getInt("amt"), rs.getString("user"), rs.getInt("user_ID"), rs.getString("password"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,36 +51,37 @@ public class DatabaseConnection {
 		return result;
 	}
 	
-	
 	/**
-	 * Get all accounts from DB and return an arraylist with them
-	 * @return ArrayList populated with all values from database
+	 * return all users from the database in a single ArrayList 
+	 * filled with UserModel objects
 	 */
-	public ArrayList<String> getAllAccounts() {
-		ArrayList<String> userAccounts = new ArrayList<String>();
-		   
+	public ArrayList<UserModel> retreiveAllUsersFromDB() {
+		ArrayList<UserModel> users = new ArrayList<UserModel>();
+
+		System.out.println("FUNCTION: DatabaseConnection retreiveAllUsersFromDB called...");
 		try {
+			UserModel result = new UserModel();
 			st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM accounts");
-			
+
 			while(rs.next()) {
-					userAccounts.add(rs.getString("user") + " " + rs.getString("amt"));
-					System.out.println("user added...");
-			   }
+				result = new UserModel(rs.getInt("amt"), rs.getString("user"), rs.getInt("user_ID"), rs.getString("password"));
+				users.add(result);
+			}			
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return userAccounts;
-		
+		return users;
 	}
+
 	
 	/**
 	 * Updates the database account with the balance in the in-memory account
 	 * @param amt
 	 */
 	public void updateAccount(int amt) {
+		System.out.println("FUNCTION: DatabaseConnection  updateAccount called...");
 		String sql = "UPDATE accounts SET amt = " + amt +
 				" WHERE user_id = 1";
 		try {
@@ -127,6 +99,7 @@ public class DatabaseConnection {
 	 * closes connection with Database
 	 */
 	public void closeConnection() {
+		System.out.println("FUNCTION: DatabaseConnection closeConnection called...");
         try {
 			conn.close();
 			System.out.println("Successful. Closing...");

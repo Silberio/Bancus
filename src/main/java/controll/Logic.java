@@ -17,36 +17,16 @@ public class Logic {
 	private static Account act = new Logic.PersonalAccount();
 	private static DatabaseConnection dbconn = new DatabaseConnection();
 
+	/**
+	 * Singleton (for some reason...) instantiation of the Logic class
+	 * @return
+	 */
 	public static Logic getInstance() {
+		System.out.println("FUNCTION: Logic getInstance created...");
 		if(instance==null) {
 			instance = new Logic();
 		}
 		return instance;
-	}
-	
-	/*
-	 * LOGIN SERVICE
-	 */
-
-	
-	/*
-	 * pseudo:
-	 * 	- Check for users and compile and return a list
-	 * 	- take a username and password
-	 * 		- check if username exists
-	 * 			- check if password correct
-	 * 
-	 * 	- start next process if password check
-	 * 	- if no check, return to login screen
-	 */
-
-	// get all users
-	// system in { user name, password}
-	// if user name and password == resultset name n pass => continue with programm
-	// if not, return to system in
-
-	public void receiveUserLogin() {
-		System.out.println("welcome: " + dbconn.getUserModel().getName());
 	}
 	
 	/*
@@ -57,10 +37,12 @@ public class Logic {
 	 * Initialize internal connection with mysql database
 	 */
 	public void establishConnectionWithDB() {
-
+		System.out.println("FUNCTION: Logic establishConnectionWithDB called...");
     	try {
 			dbconn.connectToDB();
-	//		int amt = dbconn.getUser();
+			
+			//	grab arraylist from DBconn
+			// 	somehow put the arraylist so that it's available for the gui
 			UserModel user = dbconn.getUserModel();
 			act.insertToAccount(user.getAmt());
 			act.setLoginInfo(user);
@@ -73,52 +55,17 @@ public class Logic {
 
 	
 	/**
-	 * Takes balance form in-memory accuont and inserts value into Database,
+	 * Takes balance form in-memory account and inserts value into Database,
 	 * then closes connection.
 	 */
 	public void updateAndCloseConnectionWithDB() {
+		System.out.println("FUNCTION: Logic updateAndCloseConnection called...");
 		int amt = (int) act.checkBalance();
 		dbconn.updateAccount(amt);
 		dbconn.closeConnection();
 	}
-	
-	/**
-	 * writes account balance to .txt file
-	 * @throws IOException
-	 */
-	public static void writeReceipt() throws IOException {
-		
-		FileWriter fw = new FileWriter("out.txt");
-		 
-		fw.write(""+ act.checkBalance());
-	 
-		fw.close();
-		
-	}
-	
-	/**
-	 * Reads the .txt receipt and loads whatever amount in there into the account object
-	 * @throws IOException
-	 */
-	public static void readReceipt() throws IOException {
-		
-			FileReader fileReader = new FileReader("out.txt");
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-		String line = null;
-	            // Always wrap FileReader in BufferedReader.
-	            while((line = bufferedReader.readLine()) != null) {
-	            	act.insertToAccount(Double.parseDouble(line));
-	            }   
-	            // Always close files.
-	            bufferedReader.close();         
-	}
 
-	
-	public static void loadAccount(ArrayList<String> actList) {
-		// here, get the ONE user and put it's amount into account
-	}
-	
 	public Account getAccount() {
 		return act;
 	}

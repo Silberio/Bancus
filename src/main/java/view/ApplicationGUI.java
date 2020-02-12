@@ -1,6 +1,7 @@
 package view;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -31,6 +32,7 @@ public class ApplicationGUI extends Application {
 	static Account account;
 	
 	public static void setAccount(Account account) {
+		System.out.println("FUNCTION: setAccount called...");
 		ApplicationGUI.account = account;
 	}
 	    
@@ -41,6 +43,7 @@ public class ApplicationGUI extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		System.out.println("FUNCTION: appGUI start called...");
 		  primaryStage.setTitle("BANCUS MAXIMUS XII");
 	        
 	        GridPane grid = new GridPane();
@@ -168,7 +171,14 @@ public class ApplicationGUI extends Application {
 	
 
 
+	/**
+	 * This is a modal window that asks for login data. Username and password
+	 * as stated in the database. Cancel exits the entire program, while login will
+	 * tell the user if the input is wrong, otherwise it'll close the modal window
+	 * @param primaryStage
+	 */
 	public void loginPrompt(Stage primaryStage) {
+		System.out.println("FUNCTION: appGUI loginPrompt called...");
         Label secondLabel = new Label("Please Log in: ");
         final Label wrongLogin = new Label("");
         final TextField userName = new TextField();
@@ -217,17 +227,31 @@ public class ApplicationGUI extends Application {
          */
         
         loginBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	// this button just checks whether the input in the textboxes coincides with
+        	// the data given at the start of the program
         	public void handle(ActionEvent e) {
-        		String input = userName.getText();
+        		String nameInput = userName.getText();
+        		String passInput = password.getText();
         		
-        		if(input.equals(account.getLoginInfo().getName())) {        			
+        		if(nameInput.equals(
+        				account.getLoginInfo().getName())
+        				&
+        				passInput.equals(account.getLoginInfo().getPassword())) {        			
         			newWindow.close();
         		} else {
-        			System.out.println("wrong username");
+        			System.out.println("wrong username or password");
         			wrongLogin.setText("Incorrect username or password");
         			wrongLogin.setTextFill(Color.RED);
         		}
         	}
+        	// instead of that, maybe this function here should go to Logic class and be like
+        	// "hey yo, user inserted these values into my textboxes, do u have these values in ur
+        	// array?" and then logic is either "ya, true" or "nah bruh false" and given that, 
+        	// this function will go thru with the login, and load ONLY the data from that given
+        	// account that coincided with the login data given on textboxes
+        	// otherwise, it should tell the user "bitch wrong ass password or username"
+        	
+        	// but how to = make THIS BUTTON LISTENER check if something in LOGIC class exists?
 		});
         
         
@@ -239,7 +263,21 @@ public class ApplicationGUI extends Application {
         
 	}
 	
+	/**
+	 * this bitch feels like too much logic inside what should be solely the view
+	 * view shouldn't be handling login data
+	 * @param users
+	 */
+	public void checkUsersArray(ArrayList<UserModel> users) {
+		while(users.iterator().hasNext()) {
+			//check if input == next.element.name && next.element.password
+			
+		}
+	}
+	
+	
 	public static void main(String[] args) {
+		System.out.println("FUNCTION: appGUI main called...");
 		launch(args);
 	}
 }
