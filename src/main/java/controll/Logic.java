@@ -64,6 +64,8 @@ public class Logic {
 		dbconn.updateAccount(amt);
 		dbconn.closeConnection();
 	}
+	
+	
 
 
 	public Account getAccount() {
@@ -95,8 +97,5 @@ public class Logic {
 		public UserModel getLoginInfo() {
 			return user;
 		}
-
-		
-		
 	}
 }
