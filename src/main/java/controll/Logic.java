@@ -16,7 +16,7 @@ public class Logic {
 	public static Logic instance = null;
 	private static Account act = new Logic.PersonalAccount();
 	private static DatabaseConnection dbconn = new DatabaseConnection();
-
+	
 	/**
 	 * Singleton (for some reason...) instantiation of the Logic class
 	 * @return
@@ -71,7 +71,7 @@ public class Logic {
 	public Account getAccount() {
 		return act;
 	}
-
+	
 	protected static class PersonalAccount implements Account {
 		
 		private double balance = 0;

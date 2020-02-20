@@ -173,15 +173,8 @@ public class ApplicationGUI extends Application {
 
     private TextField username = new TextField();
     private PasswordField password = new PasswordField();
-    private LoginHandler handler = new LoginHandler();
-    
-    public void setLoginHandler(LoginHandler loginHandler) {
-    	
-    }
-    
-    public TextField getUsername() {
-    	return username;
-    }
+    private static LoginHandler handler = new LoginHandler();
+
 
 	/**
 	 * This is a modal window that asks for login data. Username and password
@@ -233,6 +226,9 @@ public class ApplicationGUI extends Application {
         newWindow.show();
         
 
+        // LoginHandler = here we set the password and username fields from the GUI
+        // this actually updates the data in the login handler in real time
+        //	but it feels really really clunky
         handler.setLoginFields(username, password);
         loginBtn.setOnAction(handler);
         
